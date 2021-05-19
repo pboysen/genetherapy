@@ -4,8 +4,8 @@ import store from "./store";
 import router from "./router";
 import App from "./App.vue";
 
-Vue.config.productionTip = false;
-Vue.config.devtools = true;
+Vue.config.productionTip = true;
+Vue.config.devtools = false;
 Vue.use(Vuex);
 
 window.addEventListener("error", function(evt) {
