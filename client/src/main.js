@@ -22,10 +22,6 @@ window.addEventListener("error", function(evt) {
   evt.preventDefault();
 });
 
-window.addEventListener("unhandledrejection", function(e) {
-  console.error(e);
-});
-
 const eventbus = new Vue();
 export default eventbus;
 
@@ -36,8 +32,7 @@ new Vue({
 }).$mount("#app");
 
 var doc = localStorage.getItem("allele");
-if (doc)
-  doc = JSON.parse(doc);
+if (doc) doc = JSON.parse(doc);
 else {
   doc = {
     fileName: "Allele Case.docx",
