@@ -40,7 +40,7 @@ export default {
       <div class="phase-title">{{ phaseTitle }}</div>
     </div>
     <br />
-    Phases: 
+    Phases:
     <div class="buttons">
       <button
         v-for="(p, index) in phases"

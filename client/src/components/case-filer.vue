@@ -3,7 +3,7 @@ export default {
   name: "case-filer",
   methods: {
     importIt() {
-      var upload = window.open(
+      let win = window.open(
         "upload-file.html",
         "_blank",
         "left=100,top=100,width=400,height=400"
@@ -13,7 +13,7 @@ export default {
         window.onstorage = null;
         let docData = localStorage.getItem("allele");
         if (docData) that.$store.commit("setDoc", JSON.parse(docData));
-        upload.close();
+        win.close();
       };
     },
     publishIt() {

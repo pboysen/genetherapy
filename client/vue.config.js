@@ -1,6 +1,9 @@
 const webpack = require('webpack')
 module.exports = {
-  publicPath: "/genetherapy/docs/",
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/genetherapy/../'
+    : '/',
+  outputDir: "docs",
   configureWebpack: {
     plugins: [
       new webpack.ProvidePlugin({
