@@ -45,7 +45,7 @@ else {
         Allele Case is used to import Word content into the Allele Designer. The instructions
         below show a case on how to prepare a word document.
         <ol>
-          <li>Download <a href="/Allele Case.docx">Instructions to format Word for Allele</a></li>
+          <li>Download <a href="Allele Case.docx">Instructions to format Word for Allele</a></li>
           <li><b>Import</b> Above</li>
           <li>Drop Allele Case.docx in the dropbox that appears</li>
         </ol>

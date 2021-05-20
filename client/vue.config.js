@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 module.exports = {
-  outputDir: "docs",
+  publicPath: "/genetherapy",
+  outputDir: "../docs/",
   configureWebpack: {
     plugins: [
       new webpack.ProvidePlugin({
