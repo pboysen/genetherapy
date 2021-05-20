@@ -396,6 +396,7 @@ const factory = {
       info.el.appendChild(widget.$el);
       var parent = info.el.parentElement;
       parent.insertBefore(widget.$el, info.el);
+      parent.removeChild(info.el);
     },
     makeSubWidget(state, info) {
       let store = info.store;

@@ -11,7 +11,7 @@ export default {
     submitBar
   },
   computed: {
-    ...mapGetters(["role", "phase", "phases"]),
+    ...mapGetters(["role", "phase", "phases", "caseKey"]),
     showSubmit() {
       return this.role === "student";
     }
@@ -19,14 +19,13 @@ export default {
 };
 </script>
 <template>
-  <div id="case-viewer">
+  <div id="case-viewer" :key="caseKey">
     <phase-bar></phase-bar>
-    <phase-viewer v-for="(p, index) in phases" :pobj="p" :key="index">
-    </phase-viewer>
+    <phase-viewer v-for="p in phases" :pobj="p" :key="p.id"></phase-viewer>
     <submit-bar></submit-bar>
   </div>
 </template>
-}
+
 <style lang="scss" scoped>
 #case-viewer {
 }

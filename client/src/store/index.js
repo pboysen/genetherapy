@@ -12,6 +12,7 @@ const getDefaultState = () => {
     role: "designer",
     phase: -1,
     widget: null,
+    caseKey: 0,
     drawerEvent: { type: "", top: 50 },
     tool: "",
     incomplete: [],
@@ -41,6 +42,7 @@ const store = new Vuex.Store({
   state: getDefaultState(),
   getters: {
     case: state => state,
+    caseKey: state => state.caseKey,
     role: state => state.role,
     phase: state => state.phase,
     currentPhase: state => state.phases[state.phase],
@@ -128,6 +130,7 @@ const store = new Vuex.Store({
       state.fileName = doc.fileName;
       state.phases = doc.phases;
       store.commit("setphase", 0);
+      state.caseKey++;
     },
     setphase(state, n) {
       state.phase = n;

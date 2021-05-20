@@ -15,7 +15,6 @@ export default {
   methods: {
     textSelect() {
       var selection = window.getSelection();
-      console.log(selection);
       this.$root.$emit("textSelected", selection);
     },
     highlight() {
