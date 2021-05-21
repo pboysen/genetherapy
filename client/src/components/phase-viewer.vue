@@ -59,6 +59,7 @@ td p {
   display: block;
   text-indent: -24px;
   margin-left: 24px;
+  list-style: none;
 }
 .mchoice input {
   margin-right: 8px;
@@ -67,6 +68,7 @@ td p {
   display: block;
   text-indent: -24px;
   margin-left: 24px;
+  list-style: none;
 }
 .chklist input {
   margin-right: 8px;

@@ -7,7 +7,7 @@ export default {
         "_blank",
         "resizeable,left=700,top=500,width=300,height:300"
       );
-      setTimeout(() => win.close(), 4000);
+      setTimeout(() => win.close(), 5000);
     }
   }
 };
