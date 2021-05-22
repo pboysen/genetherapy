@@ -12,6 +12,7 @@
   margin: 20px;
   width: 300px;
   height: 200px;
+  padding: 5px;
 }
 .error {
 	border: 1px solid red;
@@ -24,10 +25,12 @@
 </style>
 </head>
 <body tabindex="-1">
-	<h3>Upload Word File</h3>
 	<div id="import">
 		<div id="dropZone">
-	</div>
+      <p>
+        Drop a file or <input type="file" name="file" id="uploadFile" class="inputfile" />
+      </p>
+    </div>
 		<div class="error" id="droperror"></div>
 		<button id="cancel">Cancel</button>
 	</div>
