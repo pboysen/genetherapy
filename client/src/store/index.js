@@ -57,7 +57,7 @@ const store = new Vuex.Store({
     widget: state => state.widget,
     fileTypes: state => state.fileTypes,
     fileName: state => state.fileName,
-    widgets: () => store.getters.currentPhase.components,
+    widgets: state => state.widgets,
     activePhase: () => store.getters["responses/activePhase"],
     activeSubmit: state =>
       state.role === "student" &&
@@ -148,6 +148,9 @@ const store = new Vuex.Store({
     setProp(state, info) {
       state.phases[state.phase].widgets[info.wid].props[info.prop] = info.value;
     },
+    setProps(state, wid, props) {
+      store.getters.widgets[wid] = props;
+    },
     setSelectedWidgetTypes(state, selected) {
       state.selectedWidgetTypes = selected;
     },
@@ -166,27 +169,34 @@ const store = new Vuex.Store({
       });
       return state.incomplete.length == 0;
     },
-    addComponents(state, comp) {
+    addComponents(state, pid) {
+      let comp = state.phases[pid].components;
       for (let id in comp) {
         let type = comp[id];
         let el = document.getElementById(id);
         if (el) {
+          store.commit("setphase", pid);
           store.commit("addComponent", { el: el, type: type });
         }
       }
+      store.commit("setphase", 0);
     },
     addComponent(state, info) {
       let wid = state.wcnt++;
+      let prototype = store.getters["factory/widgets"][info.type].prototype;
+      let wrec = JSON.parse(JSON.stringify(prototype));
+      wrec.id = wid;
+      if (info.type === "equation-widget") {
+        wrec.format = "mml";
+        wrec.formula = info.el.outerHTML;
+      }
+      Vue.set(state.widgets, wid, wrec);
       store.commit("factory/makeWidget", {
         type: info.type,
         el: info.el,
         wid: wid,
         store: store
       });
-      let prototype = store.getters["factory/widgets"][info.type].prototype;
-      let wrec = JSON.parse(JSON.stringify(prototype));
-      wrec.id = wid;
-      Vue.set(store.getters.widgets, wid, wrec);
     },
     copyWidget(state, info) {
       info.wrec = jsonCopy(store.getters.widgets[info.wid]);

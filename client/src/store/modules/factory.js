@@ -14,6 +14,7 @@ import PcDrawArrow from "@/components/PcDrawImage/PcDrawArrow.vue";
 import PcDrawRotate from "@/components/PcDrawImage/PcDrawRotate.vue";
 import PcDrawLabel from "@/components/PcDrawImage/PcDrawLabel.vue";
 import PcDrawShape from "@/components/PcDrawImage/PcDrawShape.vue";
+import equationWidget from "@/components/equation-widget.vue";
 Vue.use(Vuex);
 
 let imports = {
@@ -30,7 +31,8 @@ let imports = {
   "pc-draw-arrow": Vue.extend(PcDrawArrow),
   "pc-draw-rotate": Vue.extend(PcDrawRotate),
   "pc-draw-label": Vue.extend(PcDrawLabel),
-  "pc-draw-shape": Vue.extend(PcDrawShape)
+  "pc-draw-shape": Vue.extend(PcDrawShape),
+  "equation-widget": Vue.extend(equationWidget)
 };
 const getDefaultState = () => {
   return {
@@ -298,41 +300,22 @@ const getDefaultState = () => {
             image: "assets/img/heart diagram.png"
           }
         }
-      }
-    },
-    presets: {
-      "93a93dfdc8de792572ef18b2d0da2ef9": {
-        type: "textfield-widget",
-        props: {
-          textSize: 20
-        }
       },
-      c656cdd828cdc4f52dfa088f82f15e3b: {
-        type: "textarea-widget",
-        props: {}
-      },
-      a9b450c85fbcaab86cc0aee3b601c262: {
-        type: "select-widget",
-        props: {
-          selectOptions: "red,green,blue",
-          selectSize: 1
-        }
-      },
-      "709389a08ea44a071b82b11964f87ac6": {
-        type: "pc-draw-shape",
-        props: {
-          width: 40,
-          height: 20,
-          color: "green",
-          opacity: 0.3,
-          shape: "rectangle",
-          image: "assets/img/heart diagram.png"
-        }
-      },
-      "7870eab95c886f70870c2e8815b3fc8f": {
-        type: "pc-draw-label",
-        props: {
-          image: "assets/img/heart diagram.png"
+      "equation-widget": {
+        type: "equation-widget",
+        src: "equation-widget.png",
+        isSource: false,
+        isTarget: false,
+        isDraggable: false,
+        prototype: {
+          type: "equation-widget",
+          id: null,
+          rect: null,
+          subWidget: false,
+          props: {
+            format: "mml",
+            formula: ""
+          }
         }
       }
     },
@@ -380,8 +363,7 @@ const factory = {
   getters: {
     widgets: state => state.widgets,
     getTools: state => state.tools,
-    textSizes: state => state.widgets["textfield-widget"].textSizes,
-    getPreset: state => hash => state.presets[hash]
+    textSizes: state => state.widgets["textfield-widget"].textSizes
   },
   mutations: {
     setState(state, newState) {
@@ -389,11 +371,10 @@ const factory = {
     },
     makeWidget(state, info) {
       let widget = new imports[info.type]({
-        propsData: { wid: info.id },
+        propsData: { wid: info.wid },
         store: info.store
       });
       widget.$mount();
-      info.el.appendChild(widget.$el);
       var parent = info.el.parentElement;
       parent.insertBefore(widget.$el, info.el);
       parent.removeChild(info.el);
@@ -418,35 +399,5 @@ const factory = {
     }
   }
 };
-
-/*
-const setDraggable = function(widget) {
-  let wrapper = widget.$el;
-  wrapper.onmousedown = function(e) {
-    if (!widget.$children[0].dragging) return;
-    var left = wrapper.offsetLeft;
-    var top = wrapper.offsetTop;
-    var width = wrapper.offsetWidth;
-    var height = wrapper.offsetHeight;
-    var offsetX = e.pageX - left;
-    var offsetY = e.pageY - top;
-
-    moveAt(e.pageX, e.pageY);
-
-    function moveAt(pageX, pageY) {
-      wrapper.style = `left: ${pageX - offsetX}px; top: ${pageY - offsetY}px;`;
-    }
-
-    window.onmousemove = function(e) {
-      // move if not resizing
-      if (
-        Math.abs(wrapper.offsetWidth - width) < 2 &&
-        Math.abs(wrapper.offsetHeight - height) < 2
-      )
-        moveAt(e.pageX, e.pageY);
-    };
-  };
-};
-*/
 
 export default factory;

@@ -85,7 +85,6 @@ export default {
       const w = Math.min(this.lineWidth, 5);
       const d = Math.hypot(a.sx - a.ex, a.sy - a.ey);
       const c = a.color;
-      console.log(w, d, c);
       s.graphics
         .ss(1)
         .s(c)

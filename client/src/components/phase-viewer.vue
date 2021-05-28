@@ -6,11 +6,11 @@ export default {
   props: {
     pobj: Object
   },
-  mounted() {
-    this.$store.commit("addComponents", this.pobj.components);
-  },
   computed: {
     ...mapGetters(["phase"])
+  },
+  mounted() {
+    this.$store.commit("addComponents", this.pobj.id);
   },
   methods: {
     textSelect() {
