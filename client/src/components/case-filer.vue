@@ -1,13 +1,9 @@
 <script>
 export default {
-  name: "case-filer",
   methods: {
     importIt() {
-      let win = window.open(
-        "upload-file.html",
-        "_blank",
-        "left=100,top=100,width=400,height=400"
-      );
+      this.$store.commit("setModal", true);
+      /*
       let that = this;
       window.onstorage = () => {
         window.onstorage = null;
@@ -15,6 +11,7 @@ export default {
         if (docData) that.$store.commit("setDoc", JSON.parse(docData));
         win.close();
       };
+      */
     },
     publishIt() {
       let input = document.getElementById("publishFile");

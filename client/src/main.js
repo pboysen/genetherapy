@@ -38,11 +38,10 @@ else {
     fileName: "Allele Case.docx",
     phases: [
       {
-        title: "Formatting Word for Allele",
+        title: "Getting Started",
         id: 0,
         components: {},
-        content: `<h3>Getting Started</h3>
-        Allele Case is used to import Word content into the Allele Designer. The instructions
+        content: `Allele Case is used to import Word content into the Allele Designer. The instructions
         below show a case on how to prepare a word document.
         <ol>
           <li>Download <a href="Allele Case.docx">Instructions to format Word for Allele</a></li>

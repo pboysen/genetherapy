@@ -1,19 +1,26 @@
 <script>
 import mainBar from "@/components/main-bar.vue";
 import caseViewer from "@/components/case-viewer.vue";
-
+import PcImportWord from "@/components/pc-import-word.vue";
 export default {
   name: "App",
   components: {
     mainBar,
-    caseViewer
+    caseViewer,
+    PcImportWord
+  },
+  computed: {
+    isModalVisible() {
+      return this.$store.getters.isModalVisible;
+    }
   }
 };
 </script>
 <template>
   <div id="app">
-    <main-bar></main-bar>
-    <case-viewer></case-viewer>
+    <pc-import-word v-show="isModalVisible" />
+    <main-bar />
+    <case-viewer />
   </div>
 </template>
 <style lang="scss">

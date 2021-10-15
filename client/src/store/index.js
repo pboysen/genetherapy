@@ -15,6 +15,7 @@ const getDefaultState = () => {
     caseKey: 0,
     drawerEvent: { type: "", top: 50 },
     tool: "",
+    isModalVisible: false,
     incomplete: [],
     phases: [],
     widgets: {},
@@ -58,6 +59,7 @@ const store = new Vuex.Store({
     fileTypes: state => state.fileTypes,
     fileName: state => state.fileName,
     widgets: state => state.widgets,
+    isModalVisible: state => state.isModalVisible,
     activePhase: () => store.getters["responses/activePhase"],
     activeSubmit: state =>
       state.role === "student" &&
@@ -141,6 +143,9 @@ const store = new Vuex.Store({
     },
     setwidget(state, wid) {
       state.widget = wid;
+    },
+    setModal(state, value) {
+      state.isModalVisible = value;
     },
     setSubmitTitle(state, title) {
       state.phases[state.phase].submit = title;
