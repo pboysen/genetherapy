@@ -1,11 +1,51 @@
 <script>
 import PcModal from "@/components/pc-modal.vue";
+import {getPhases} from "@/mixins/getPhases-mixin";
 export default {
   components: {
     PcModal
   },
   methods: {
-    download() {},
+    handleFiles(files) {
+      var err = document.getElementById("droperror");
+      err.style.visibility = "visible";
+      err.innerHTML = "Making the case...";
+      const docxtype =
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+      if (files.length == 1) {
+        if (files[0].type === docxtype) {
+          var reader = new FileReader();
+          var that = this;
+          reader.onload = function() {
+            getPhases(reader.result, err)
+              .then(phases => {
+                err.style.visibility = "hidden";
+                let doc = { "fileName": files[0].name, "phases": phases };
+                that.$store.commit("setState", doc);
+                localStorage.setItem("allele", JSON.stringify(doc));
+                that.cancel();
+              });
+          };
+          reader.readAsArrayBuffer(files[0]);
+        } else err.innerHTML = "Only .docx files can be read.";
+      } else err.innerHTML = "Please select one file.";
+    },
+    drop(e) {
+      e.preventDefault();
+      var files = [];
+      if (e.dataTransfer.items) {
+        for (var i = 0; i < e.dataTransfer.items.length; i++) {
+          if (e.dataTransfer.items[i].kind === "file") {
+            files.push(e.dataTransfer.items[i].getAsFile());
+          }
+        }
+      }
+      this.handleFiles(files);
+    },
+    download() {
+      let uploadFile = document.getElementById("uploadWord");
+      this.handleFiles(uploadFile.files);
+    },
     cancel() {
       this.$store.commit("setModal", false);
     }
@@ -19,10 +59,10 @@ export default {
     </template>
     <template v-slot:body>
       <div id="import">
-        <div id="dropZone">
+        <div id="dropZone" @dragover.stop.prevent @drop="drop($event)">
           <p>
             Drop a file here or select a file:<br /><br />
-            <input type="file" name="file" id="uploadFile" class="inputfile" />
+            <input type="file" name="file" id="uploadWord" class="inputfile" />
           </p>
         </div>
         <div class="error" id="droperror"></div>
@@ -30,7 +70,7 @@ export default {
     </template>
     <template v-slot:footer>
       <div id="import-buttons">
-        <button @click="download">Download</button>
+        <button @click.stop.prevent="download()">Download</button>
         <button @click="cancel">Cancel</button>
       </div>
     </template>

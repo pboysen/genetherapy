@@ -6,13 +6,16 @@ export default {
   props: {
     pobj: Object
   },
+  mounted() {
+    this.$store.commit("addWidgets", this.pobj.id);
+  },
   computed: {
     ...mapGetters(["phase"])
   },
-  mounted() {
-    this.$store.commit("addComponents", this.pobj.id);
-  },
   methods: {
+    show() {
+      return this.phase == this.pobj.id;
+    },
     textSelect() {
       var selection = window.getSelection();
       this.$root.$emit("textSelected", selection);
@@ -31,14 +34,12 @@ export default {
 };
 </script>
 <template>
-  <div class="phase" v-show="phase == pobj.id">
+  <div class="phase" v-show="show()">
     <div v-html="pobj.content"></div>
   </div>
 </template>
 <style lang="scss">
 .phase {
-  margin-left: 200px;
-  margin-right: 200px;
   padding: 50px;
   font-size: 14px;
 }

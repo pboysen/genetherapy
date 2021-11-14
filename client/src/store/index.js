@@ -69,17 +69,11 @@ const store = new Vuex.Store({
       state.phase >= 0 ? store.getters.currentPhase.submit : "Submit",
     selectedWidgetTypes: state => state.selectedWidgetTypes,
     phaseWidget: state => info => state.phases[info.phase].widgets[info.wid],
-    widgetType: state => wid => {
-      let type = null;
-      state.phases.forEach(phase => {
-        if (wid in phase.components) type = phase.components[wid].type;
-      });
-      return type;
-    },
+    widgetType: state => wid => state.widgets[wid].type,
     locked: state => pid => state.role === "student" && pid > this.activePhase,
     incomplete: state => wid => state.incomplete.includes(wid),
     getPropValue: state => info => {
-      let widgets = state.phases[info.phase].components;
+      let widgets = state.phases[info.phase].widgets;
       if (info.wid in widgets && info.type === widgets[info.wid].type)
         return widgets[info.wid].props[info.prop];
       else {
@@ -174,19 +168,17 @@ const store = new Vuex.Store({
       });
       return state.incomplete.length == 0;
     },
-    addComponents(state, pid) {
-      let comp = state.phases[pid].components;
+    addWidgets(state, pid) {
+      let comp = state.phases[pid].widgets;
       for (let id in comp) {
         let type = comp[id];
         let el = document.getElementById(id);
         if (el) {
-          store.commit("setphase", pid);
-          store.commit("addComponent", { el: el, type: type });
+          store.commit("addWidget", { el: el, type: type });
         }
       }
-      store.commit("setphase", 0);
     },
-    addComponent(state, info) {
+    addWidget(state, info) {
       let wid = state.wcnt++;
       let prototype = store.getters["factory/widgets"][info.type].prototype;
       let wrec = JSON.parse(JSON.stringify(prototype));

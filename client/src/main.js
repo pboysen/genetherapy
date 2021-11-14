@@ -4,12 +4,11 @@ import store from "./store";
 import router from "./router";
 import App from "./App.vue";
 
-Vue.config.productionTip = true;
-Vue.config.devtools = false;
+Vue.config.productionTip = false;
+Vue.config.devtools = true;
 Vue.use(Vuex);
 
 window.addEventListener("error", function(evt) {
-  /*
   console.log(
     "Caught[via 'error' event]:  '" +
       evt.message +
@@ -18,7 +17,6 @@ window.addEventListener("error", function(evt) {
       ":" +
       evt.lineno
   );
-  */
   evt.preventDefault();
 });
 

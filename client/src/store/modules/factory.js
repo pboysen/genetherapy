@@ -1,39 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import textfieldWidget from "@/components/textfield-widget.vue";
-import textareaWidget from "@/components/textarea-widget.vue";
-import selectWidget from "@/components/select-widget.vue";
-import carryForward from "@/components/carry-forward.vue";
-import mediaWidget from "@/components/media-widget.vue";
-import checkList from "@/components/check-list.vue";
-import multipleChoice from "@/components/multiple-choice.vue";
-import imageWidget from "@/components/image-widget.vue";
-import tableWidget from "@/components/table-widget.vue";
-import uploadWidget from "@/components/upload-widget.vue";
-import PcDrawArrow from "@/components/PcDrawImage/PcDrawArrow.vue";
-import PcDrawRotate from "@/components/PcDrawImage/PcDrawRotate.vue";
-import PcDrawLabel from "@/components/PcDrawImage/PcDrawLabel.vue";
-import PcDrawShape from "@/components/PcDrawImage/PcDrawShape.vue";
-import equationWidget from "@/components/equation-widget.vue";
 Vue.use(Vuex);
 
-let imports = {
-  "textfield-widget": Vue.extend(textfieldWidget),
-  "textarea-widget": Vue.extend(textareaWidget),
-  "select-widget": Vue.extend(selectWidget),
-  "carry-forward": Vue.extend(carryForward),
-  "media-widget": Vue.extend(mediaWidget),
-  "check-list": Vue.extend(checkList),
-  "multiple-choice": Vue.extend(multipleChoice),
-  "image-widget": Vue.extend(imageWidget),
-  "table-widget": Vue.extend(tableWidget),
-  "upload-widget": Vue.extend(uploadWidget),
-  "pc-draw-arrow": Vue.extend(PcDrawArrow),
-  "pc-draw-rotate": Vue.extend(PcDrawRotate),
-  "pc-draw-label": Vue.extend(PcDrawLabel),
-  "pc-draw-shape": Vue.extend(PcDrawShape),
-  "equation-widget": Vue.extend(equationWidget)
-};
+let prototypes = {};
+
 const getDefaultState = () => {
   return {
     widgets: {
@@ -240,7 +210,7 @@ const getDefaultState = () => {
           subWidget: false,
           props: {
             colors: "red,blue",
-            image: "assets/img/heart diagram.png",
+            image: "assets/img/SW_2.png",
             lineWidth: 5
           }
         }
@@ -275,7 +245,7 @@ const getDefaultState = () => {
           rect: null,
           subWidget: false,
           props: {
-            image: "assets/img/heart diagram.png"
+            image: "assets/img/SW_2.png"
           }
         }
       },
@@ -315,6 +285,24 @@ const getDefaultState = () => {
           props: {
             format: "mml",
             formula: ""
+          }
+        }
+      },
+      "pc-molecule-viewer": {
+        type: "pc-molecule-viewer",
+        src: "pc-molecule-viewer.png",
+        isSource: false,
+        isTarget: false,
+        isDraggable: false,
+        prototype: {
+          type: "pc-molecule-viewer",
+          id: null,
+          rect: null,
+          subWidget: false,
+          props: {
+            pdb: "",
+            background: "",
+            style: ""
           }
         }
       }
@@ -370,14 +358,10 @@ const factory = {
       Object.assign(state, newState);
     },
     makeWidget(state, info) {
-      let widget = new imports[info.type]({
-        propsData: { wid: info.wid },
-        store: info.store
-      });
-      widget.$mount();
-      var parent = info.el.parentElement;
-      parent.insertBefore(widget.$el, info.el);
-      parent.removeChild(info.el);
+      if (prototypes[info.type])
+        mountWidget(info);
+      else
+        loadPrototype(info);
     },
     makeSubWidget(state, info) {
       let store = info.store;
@@ -399,5 +383,28 @@ const factory = {
     }
   }
 };
+
+function mountWidget(info) {
+  const widget = new prototypes[info.type]({
+    propsData: { wid: info.wid },
+    store: info.store
+  });
+  widget.$mount();
+  var parent = info.el.parentElement;
+  if (parent) {
+    parent.insertBefore(widget.$el, info.el);
+    parent.removeChild(info.el);
+  }
+}
+
+function loadPrototype(info) {
+  import(
+    /* webpackChunkName: "[request]" */
+      `@/components/${info.type}.vue`
+  ).then(tool => {
+      prototypes[info.type] = Vue.extend(tool.default);
+      mountWidget(info);
+  });
+}
 
 export default factory;

@@ -37,10 +37,8 @@ export default {
   <div id="phase-bar">
     <zoom-component class="zoom"></zoom-component>
     <div class="phase-top">
-      <div class="phase-title">{{ phaseTitle }}</div>
+      <div class="phase-title">{{ phaseTitle }} </div>
     </div>
-    <br />
-    Phases:
     <div class="buttons">
       <button
         v-for="(p, index) in phases"
@@ -62,16 +60,16 @@ export default {
   margin: 2px;
 }
 .phase-title {
-  font-weight: bold;
   float: left;
   margin-left: 10px;
+  margin-right: 10px;
 }
 .buttons {
   display: inline-block;
 }
 .phase-button {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   color: blue;
   border: 1px solid grey;
   border-radius: 50%;

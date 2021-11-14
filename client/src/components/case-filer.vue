@@ -3,15 +3,6 @@ export default {
   methods: {
     importIt() {
       this.$store.commit("setModal", true);
-      /*
-      let that = this;
-      window.onstorage = () => {
-        window.onstorage = null;
-        let docData = localStorage.getItem("allele");
-        if (docData) that.$store.commit("setDoc", JSON.parse(docData));
-        win.close();
-      };
-      */
     },
     publishIt() {
       let input = document.getElementById("publishFile");
